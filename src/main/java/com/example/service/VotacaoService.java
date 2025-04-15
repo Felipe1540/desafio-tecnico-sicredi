@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class VotacaoService {
 
-    private PautaRepository pautaRepository;
-    private VotoRepository votoRepository;
+    private final PautaRepository pautaRepository;
+    private final VotoRepository votoRepository;
 
     // Metodo para cadastro da pauta
     public Pauta cadastrarPauta(String descricao) {
