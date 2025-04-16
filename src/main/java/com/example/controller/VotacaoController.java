@@ -24,11 +24,11 @@ public class VotacaoController {
     }
 
     @PostMapping("/voto")
-    public Voto cadastrarVoto(@RequestBody Map<String, Object> request) {
+    public void cadastrarVoto(@RequestBody Map<String, Object> request) {
         Long eleitorId = Long.valueOf(request.get("eleitorId").toString());
         Long pautaId = Long.valueOf(request.get("pautaId").toString());
         String voto = request.get("voto").toString();
 
-        return votacaoService.cadastrarVoto(eleitorId, pautaId, voto);
+        votacaoService.cadastrarVoto(eleitorId, pautaId, voto);
     }
 }

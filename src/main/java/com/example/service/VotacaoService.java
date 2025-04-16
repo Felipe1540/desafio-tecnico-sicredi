@@ -23,12 +23,19 @@ public class VotacaoService {
     }
 
     // Metodo para registro do voto
-    public Voto cadastrarVoto(Long eleitorId, Long pautaId, String votoDesc) {
-        Voto voto = new Voto();
-        voto.setEleitorId(eleitorId);
-        voto.setPautaId(pautaId);
-        voto.setVoto(votoDesc);
+    public void cadastrarVoto(Long eleitorId, Long pautaId, String votoDesc) {
+        if (!votoDesc.equalsIgnoreCase("Sim") && !votoDesc.replace("Ã", "A").equalsIgnoreCase("Não")) {
+            throw new RuntimeException("O voto deve ser 'Sim' ou 'Não'.");
+        }
 
-        return votoRepository.save(voto);
+        if (votoRepository.existsByEleitorIdAndPautaId(eleitorId, pautaId)){
+            Voto voto = new Voto();
+            voto.setEleitorId(eleitorId);
+            voto.setPautaId(pautaId);
+            voto.setVoto(votoDesc);
+            votoRepository.save(voto);
+        } else {
+            throw new RuntimeException("É permitido apenas 1 voto por pauta para cada eleitor.");
+        }
     }
 }
