@@ -1,0 +1,1 @@
+web: java -jar target/DesafioSicredi-0.0.1-SNAPSHOT.jar
