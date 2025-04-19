@@ -7,6 +7,8 @@ import com.example.repository.VotoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class VotacaoService {
@@ -24,18 +26,42 @@ public class VotacaoService {
 
     // Metodo para registro do voto
     public void cadastrarVoto(Long eleitorId, Long pautaId, String votoDesc) {
-        if (!votoDesc.equalsIgnoreCase("Sim") && !votoDesc.replace("Ã", "A").equalsIgnoreCase("Não")) {
-            throw new RuntimeException("O voto deve ser 'Sim' ou 'Não'.");
-        }
+        Pauta pauta = pautaRepository.findById(pautaId)
+                .orElseThrow(() -> new RuntimeException("Pauta não encontrada"));
 
-        if (votoRepository.existsByEleitorIdAndPautaId(eleitorId, pautaId)){
+        if (!votoRepository.existsByEleitorIdAndPautaId(eleitorId, pauta)){
             Voto voto = new Voto();
             voto.setEleitorId(eleitorId);
-            voto.setPautaId(pautaId);
+            voto.setPautaId(pauta);
             voto.setVoto(votoDesc);
             votoRepository.save(voto);
         } else {
             throw new RuntimeException("É permitido apenas 1 voto por pauta para cada eleitor.");
         }
+    }
+
+    // Contagem de votos "sim" ou "não"
+    public String contagemDeVotos(Long pautaId) {
+        Pauta pauta = pautaRepository.findById(pautaId)
+                .orElseThrow(() -> new RuntimeException("Pauta não encontrada"));
+
+        List<Voto> votos = votoRepository.findByPautaId(pauta);
+        int sim = 0;
+        int nao = 0;
+
+        for (Voto voto : votos) {
+            String valor = voto.getVoto();
+
+            if ("SIM".equals(valor)) {
+                sim++;
+            }
+            if ("NÃO".equals(valor)) {
+                nao++;
+            }
+        }
+
+        return "Contagem de votos da pauta: " + pauta.getDescricao() + "\n" +
+                "SIM = " + sim + "\n" +
+                "NÃO = " + nao;
     }
 }
