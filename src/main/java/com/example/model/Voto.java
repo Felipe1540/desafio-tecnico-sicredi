@@ -17,16 +17,11 @@ public class Voto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "O campo 'eleitorId' é obrigatório e não pode ser nulo ou vazio")
-    @Positive(message = "O valor deve ser um número positivo")
     private Long eleitorId;
 
-    @NotNull(message = "O campo 'pautaId' é obrigatório e não pode ser nulo ou vazio")
     @ManyToOne
     @JoinColumn(name = "pauta_id", nullable = false)
     private Pauta pautaId;
 
-    @NotBlank(message = "O campo 'voto' é obrigatório e não pode ser nulo ou vazio")
-    @Pattern(regexp = "SIM|NÃO", message = "O campo 'voto' deve ser 'SIM' ou 'NÃO'")
     private String voto; //Dever ser SIM ou NÃO
 }

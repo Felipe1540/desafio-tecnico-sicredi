@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.dto.PautaDTO;
+import com.example.dto.VotoDTO;
 import com.example.model.Pauta;
 import com.example.service.VotacaoService;
 import jakarta.validation.Valid;
@@ -22,12 +23,8 @@ public class VotacaoController {
     }
 
     @PostMapping("/votar")
-    public void cadastrarVoto(@RequestBody @Valid Map<String, Object> request) {
-        Long eleitorId = Long.valueOf(request.get("eleitorId").toString());
-        Long pautaId = Long.valueOf(request.get("pautaId").toString());
-        String voto = request.get("voto").toString();
-
-        votacaoService.cadastrarVoto(eleitorId, pautaId, voto);
+    public void cadastrarVoto(@RequestBody @Valid VotoDTO votoDto) {
+        votacaoService.cadastrarVoto(votoDto);
     }
 
     @GetMapping("/contagem")

@@ -19,4 +19,10 @@ public class Pauta {
     private String descricao;
     private Long duracaoEmMinutos;
     private LocalDateTime dataCriacao;
+
+    //validando se sessao está aberta para votacao, se o momnto atual é anterior ao horário de fim da sessao retorna true
+    public boolean isSessaoAberta() {
+        LocalDateTime fimDaSessao = this.dataCriacao.plusMinutes(this.duracaoEmMinutos);
+        return LocalDateTime.now().isBefore(fimDaSessao);
+    }
 }

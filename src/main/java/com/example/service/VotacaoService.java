@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.dto.PautaDTO;
+import com.example.dto.VotoDTO;
 import com.example.model.Pauta;
 import com.example.model.Voto;
 import com.example.repository.PautaRepository;
@@ -32,19 +33,23 @@ public class VotacaoService {
     }
 
     // Metodo para registro do voto
-    public void cadastrarVoto(Long eleitorId, Long pautaId, String votoDesc) {
-        Pauta pauta = pautaRepository.findById(pautaId)
+    public void cadastrarVoto(VotoDTO votoDto) {
+        Pauta pauta = pautaRepository.findById(votoDto.getPautaId())
                 .orElseThrow(() -> new RuntimeException("Pauta não encontrada"));
 
-        if (!votoRepository.existsByEleitorIdAndPautaId(eleitorId, pauta)){
-            Voto voto = new Voto();
-            voto.setEleitorId(eleitorId);
-            voto.setPautaId(pauta);
-            voto.setVoto(votoDesc);
-            votoRepository.save(voto);
-        } else {
+        if (!pauta.isSessaoAberta()) {
+            throw new RuntimeException("A sessão de votação para esta pauta está encerrada.");
+        }
+
+        if (votoRepository.existsByEleitorIdAndPautaId(votoDto.getEleitorId(), pauta)) {
             throw new RuntimeException("É permitido apenas 1 voto por pauta para cada eleitor.");
         }
+
+        Voto voto = new Voto();
+        voto.setEleitorId(votoDto.getEleitorId());
+        voto.setPautaId(pauta);
+        voto.setVoto(votoDto.getVoto());
+        votoRepository.save(voto);
     }
 
     // Contagem de votos "sim" ou "não"
@@ -71,4 +76,6 @@ public class VotacaoService {
                 "SIM = " + sim + "\n" +
                 "NÃO = " + nao;
     }
+
+
 }
