@@ -1,7 +1,7 @@
 package com.example.controller;
 
+import com.example.dto.PautaDTO;
 import com.example.model.Pauta;
-import com.example.model.Voto;
 import com.example.service.VotacaoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +17,8 @@ public class VotacaoController {
     private final VotacaoService votacaoService;
 
     @PostMapping("/pauta")
-    public Pauta cadastrarPauta(@RequestBody @Valid Map<String, String> request) {
-        return votacaoService.cadastrarPauta(request.get("descricao"));
+    public Pauta cadastrarPauta(@RequestBody @Valid PautaDTO pautaDto) {
+        return votacaoService.cadastrarPauta(pautaDto);
     }
 
     @PostMapping("/votar")

@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.dto.PautaDTO;
 import com.example.model.Pauta;
 import com.example.model.Voto;
 import com.example.repository.PautaRepository;
@@ -7,6 +8,7 @@ import com.example.repository.VotoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,9 +19,14 @@ public class VotacaoService {
     private final VotoRepository votoRepository;
 
     // Metodo para cadastro da pauta
-    public Pauta cadastrarPauta(String descricao) {
+    public Pauta cadastrarPauta(PautaDTO pautaDto) {
         Pauta pauta = new Pauta();
-        pauta.setDescricao(descricao);
+        pauta.setDescricao(pautaDto.getDescricao());
+        pauta.setDataCriacao(LocalDateTime.now()); //pegando hora atual da criacao para depois traçar o tempo
+
+        //se não for informado, define o padrão de 1 mninuto para a pauta
+        Long duracao = pautaDto.getDuracaoEmMinutos() != null ? pautaDto.getDuracaoEmMinutos() : 1L;
+        pauta.setDuracaoEmMinutos(duracao);
 
         return pautaRepository.save(pauta);
     }
