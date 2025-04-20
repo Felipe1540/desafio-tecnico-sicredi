@@ -1,5 +1,6 @@
 package com.example.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+@Schema(description = "Entidade de Voto")
 @Entity
 @Data
 public class Voto {

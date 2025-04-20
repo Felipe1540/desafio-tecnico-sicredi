@@ -77,5 +77,14 @@ public class VotacaoService {
                 "NÃO = " + nao;
     }
 
+    public List<Voto> BuscarVotosPorPauta(Long pautaId) {
+        Pauta pauta = pautaRepository.findById(pautaId)
+                .orElseThrow(() -> new RuntimeException("Pauta não encontrada"));
+
+        List<Voto> votos = votoRepository.findByPautaId(pauta);
+
+        return votos;
+    }
+
 
 }
