@@ -86,5 +86,11 @@ public class VotacaoService {
         return votos;
     }
 
+    public List<Pauta> BuscarPautas() {
+        List<Pauta> pautas = pautaRepository.findAll();
+
+        return pautas;
+    }
+
 
 }

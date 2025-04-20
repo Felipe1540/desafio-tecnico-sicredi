@@ -22,6 +22,8 @@ public class Pauta {
 
     //validando se sessao está aberta para votacao, se o momnto atual é anterior ao horário de fim da sessao retorna true
     public boolean isSessaoAberta() {
+        if (dataCriacao == null || duracaoEmMinutos == null) return false;
+
         LocalDateTime fimDaSessao = this.dataCriacao.plusMinutes(this.duracaoEmMinutos);
         return LocalDateTime.now().isBefore(fimDaSessao);
     }

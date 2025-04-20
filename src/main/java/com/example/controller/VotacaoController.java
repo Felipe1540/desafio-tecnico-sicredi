@@ -45,4 +45,10 @@ public class VotacaoController {
     public List<Voto> buscarVotos(@RequestParam Long pautaId) {
         return votacaoService.BuscarVotosPorPauta(pautaId);
     }
+
+    @Operation(summary = "Buscar todas as informações das pautas. api/buscarPautas")
+    @GetMapping("/buscarPautas")
+    public List<Pauta> buscarVotos() {
+        return votacaoService.BuscarPautas();
+    }
 }
