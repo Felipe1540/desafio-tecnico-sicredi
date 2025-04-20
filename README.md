@@ -56,6 +56,9 @@ Exemplos de retorno do serviço
 
 ○ Como você versionaria a API da sua aplicação? Que estratégia usar?
 
+Resposta: Pesquisando sobre a arquitetura da api e vendo a respeito melhores práticas, encontrei a melhor solução pensando em um Versionamento por URL. Onde eu criaria versões da api, exemplo : **/api/v1/pauta** && **/api/v2/pauta** e poderia ter várias versões diferentes podendo ser utilizadas. Para aplicar eu faria pacotes diferentes do controller exemplo: **controller.v1** && **controller.v2**. Garantindo o versionamento diferente e utilizável e a facilidade de implementação.
+
+
 ## O que será analisado
 
 - Simplicidade no design da solução (evitar over engineering)
@@ -115,3 +118,118 @@ A tela do tipo SELECAO exibe uma lista de opções para que o usuário.
 O aplicativo envia uma requisição POST para a url informada e com o body definido pelo objeto dentro de cada item da lista de seleção, quando o mesmo é acionado, semelhando ao funcionamento dos botões da tela FORMULARIO.
 
 # desafio-votacao
+
+
+
+# Documentação da API REST 
+
+### Visão Geral
+
+Esta aplicação é uma API REST desenvolvida em Java com Spring Boot, responsável por gerenciar pautas e sessões de votação, permitindo que eleitores votem em pautas dentro de um prazo pré-definido. Ideal para uso em assembleias online.
+
+---
+
+### Tecnologias Utilizadas
+
+- **Java 21**
+- **Spring Boot 3.4.4**
+- **Spring Web** - Para criação da API REST
+- **Spring Data JPA** - Integração com banco de dados relacional
+- **PostgreSQL** - Banco de dados utilizado (hospedado no Heroku)
+- **Hibernate Validator / Jakarta Validation** - Validação dos dados
+- **Lombok** - Redução de boilerplate (getters, setters, construtores etc.)
+- **H2** - Banco em memória (para testes locais)
+- **Swagger UI (springdoc-openapi 2.8.6)** - Documentação interativa da API
+- **Maven** - Gerenciador de dependências e build
+
+
+---
+
+### Hospedagem na Nuvem
+
+A aplicação está hospedada no **Heroku**, utilizando uma instância do **PostgreSQL** como banco de dados principal. A conexão é gerenciada por variáveis configuradas no `application.properties`.
+
+Também foi feito o vínculo do repositório GitHub, ou seja, cada **push** na **main** será automaticamente deployado para a nuvem.
+
+---
+
+### Arquitetura dos pacotes
+
+```
+com.example
+├── controller       # Endpoints REST
+├── service          # Regras de negócio
+├── model            # Entidades JPA
+├── dto              # Objetos de transferência de dados
+└── repository       # Interfaces de acesso a dados (Spring Data JPA)
+```
+
+---
+
+### Funcionalidades Principais
+
+- Cadastro de pautas com duração configurável
+- Abertura de sessão de votação automática na criação
+- Restrição de voto único por eleitor/pauta
+- Contagem de votos por pauta
+- Consulta de pautas cadastradas
+
+---
+
+### Validações e Regras de Negócio
+
+- Cada pauta pode ter um tempo de votação customizável (default: 1 minuto)
+- Um eleitor só pode votar uma vez por pauta
+- Votos só são aceitos enquanto a sessão estiver aberta
+
+---
+
+### Exemplos de Requisição
+
+#### Criar Pauta
+
+```json
+POST /api/pauta
+{
+  "descricao": "Nova pauta sobre orçamento",
+  "duracaoEmMinutos": 5
+}
+```
+
+#### Votar
+
+```json
+POST /api/votar
+{
+  "eleitorId": 10,
+  "pautaId": 2,
+  "voto": "SIM"
+}
+```
+
+#### Contagem de Votos
+
+```
+GET /api/contagem?pautaId=2
+```
+
+---
+
+### Swagger UI
+
+A documentação interativa da API está disponível via:
+
+```
+https://desafio-votos-a364f57b6419.herokuapp.com/swagger-ui.html
+```
+
+---
+
+### Considerações Finais
+
+- A aplicação está pronta para deploy em produção.
+- Pode ser adaptada para autenticação/autorizacão.
+- Está preparada para escalabilidade horizontal com bancos em nuvem.
+
+---
+
