@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@Tag(name = "Votação", description = "Endpoints para votação em pautas")
+@Tag(name = "Votação", description = "Endpoints para votação em pautas.")
 public class VotacaoController {
 
     private final VotacaoService votacaoService;
@@ -46,7 +46,7 @@ public class VotacaoController {
         return votacaoService.BuscarVotosPorPauta(pautaId);
     }
 
-    @Operation(summary = "Buscar todas as informações das pautas. api/buscarPautas")
+    @Operation(summary = "Buscar todas as informações das pautas. api/buscarPautas .")
     @GetMapping("/buscarPautas")
     public List<Pauta> buscarVotos() {
         return votacaoService.BuscarPautas();
