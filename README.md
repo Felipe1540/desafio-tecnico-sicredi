@@ -153,7 +153,7 @@ Também foi feito o vínculo do repositório GitHub, ou seja, cada **push** na *
 
 ---
 
-### Arquitetura dos pacotes
+### Arquitetura
 
 ```
 com.example

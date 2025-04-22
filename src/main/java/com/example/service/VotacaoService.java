@@ -58,25 +58,17 @@ public class VotacaoService {
                 .orElseThrow(() -> new RuntimeException("Pauta não encontrada"));
 
         List<Voto> votos = votoRepository.findByPautaId(pauta);
-        int sim = 0;
-        int nao = 0;
 
-        for (Voto voto : votos) {
-            String valor = voto.getVoto();
-
-            if ("SIM".equals(valor)) {
-                sim++;
-            }
-            if ("NÃO".equals(valor)) {
-                nao++;
-            }
-        }
+        // buscando dentro de votos e somando sim e não dentro da variavel
+        long sim = votos.stream().filter(v -> "SIM".equalsIgnoreCase(v.getVoto())).count();
+        long nao = votos.stream().filter(v -> "NÃO".equalsIgnoreCase(v.getVoto())).count();
 
         return "Contagem de votos da pauta: " + pauta.getDescricao() + "\n" +
                 "SIM = " + sim + "\n" +
                 "NÃO = " + nao;
     }
 
+    // busca de votos por pauta, retorna a lista completa para o id pauta que for passado
     public List<Voto> BuscarVotosPorPauta(Long pautaId) {
         Pauta pauta = pautaRepository.findById(pautaId)
                 .orElseThrow(() -> new RuntimeException("Pauta não encontrada"));
@@ -86,6 +78,7 @@ public class VotacaoService {
         return votos;
     }
 
+    // busca por pautas, retorna todas as pautas cadastradas, com sessões abertas ou não.
     public List<Pauta> BuscarPautas() {
         List<Pauta> pautas = pautaRepository.findAll();
 
