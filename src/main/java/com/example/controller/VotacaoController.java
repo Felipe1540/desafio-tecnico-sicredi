@@ -22,7 +22,7 @@ public class VotacaoController {
 
     private final VotacaoService votacaoService;
 
-    @Operation(summary = "Cadastrar uma pauta")
+    @Operation(summary = "Cadastrar uma pauta.")
     @PostMapping("/pauta")
     public Pauta cadastrarPauta(@RequestBody @Valid PautaDTO pautaDto) {
         return votacaoService.cadastrarPauta(pautaDto);
